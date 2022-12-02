@@ -14,14 +14,10 @@ const LoginForm = (props) => {
         try {
             const userData = { username, password }
             const user = await loginService.login(userData)
-            console.log(user.name)
-            props.loginHandler({
-                status: true,
-                name: user.name
-            })
-            console.log('login complete')
+            props.onSubmit(user)
             setUsername('')
             setPassword('')
+            console.log('login complete')
         } catch (error) {
             console.log('invalid username or password')
         }

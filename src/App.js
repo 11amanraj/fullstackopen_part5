@@ -5,8 +5,7 @@ import blogService from './services/blogs'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [loggedIn, setLoggedIn] = useState(false)
-  const [name, setName] = useState('')
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -14,16 +13,29 @@ const App = () => {
     )  
   }, [])
 
-  const loginHandler = loginObj => {
-    setLoggedIn(loginObj.status)
-    setName(loginObj.name)
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggeduser')
+    if(loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+    }
+  }, [])
+
+  const logoutHandler = () => {
+    window.localStorage.clear()
+    setUser()
   }
 
-  if (loggedIn) {
+  const loginHandler = (user) => {
+    window.localStorage.setItem('loggeduser', JSON.stringify(user))
+    setUser(user)
+  }
+
+  if (user) {
     return (
       <div>
         <h2>blogs</h2>
-        <h3>{`${name} logged in`}</h3>
+        <h3>{`${user.name} logged in`} <button onClick={logoutHandler}>Log out</button></h3>
         {blogs.map(blog =>
           <Blog key={blog.id} blog={blog} />
         )}
@@ -32,7 +44,7 @@ const App = () => {
   } else {
     return (
       <div>
-        <LoginForm loginHandler={loginHandler}/>
+        <LoginForm onSubmit={loginHandler}/>
       </div>
     )
   }
