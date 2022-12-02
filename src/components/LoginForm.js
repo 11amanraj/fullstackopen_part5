@@ -19,7 +19,7 @@ const LoginForm = (props) => {
             setPassword('')
             console.log('login complete')
         } catch (error) {
-            console.log('invalid username or password')
+            props.onError({type: 'error', message: 'invalid username or password'})
         }
     }
 

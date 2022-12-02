@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
+import './App.css'
 
 const App = () => {
+  const [message, setMessage] = useState(null)
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
 
@@ -25,6 +27,18 @@ const App = () => {
     }
   }, [])
 
+  useEffect(() => {
+    if(message) {
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+      
+      return () => clearTimeout(setTimeout(() => {
+        setMessage(null)
+      }, 5000))
+    }
+  }, [message])
+
   const logoutHandler = () => {
     window.localStorage.clear()
     setUser()
@@ -33,6 +47,10 @@ const App = () => {
   const loginHandler = (user) => {
     window.localStorage.setItem('loggeduser', JSON.stringify(user))
     setUser(user)
+  }
+
+  const loginErrorHandler = (errorObj) => {
+    setMessage(errorObj)
   }
 
   const blogSubmitHandler = async e => {
@@ -50,8 +68,10 @@ const App = () => {
       setAuthor('')
       setTitle('')
       setUrl('')
+      setMessage({type: 'success', message: `${blog.title} by ${blog.author} added`})
     } catch(error) {
-      console.log(error.response.data.error)
+      setMessage({type: 'error', message: error.response.data.error})
+      // console.log(error.response.data.error)
     }
   }
 
@@ -59,8 +79,8 @@ const App = () => {
     return (
       <div>
         <h2>blogs</h2>
+        {message && <div className={message.type}>{message.message}</div>}
         <h3>{`${user.name} logged in`} <button onClick={logoutHandler}>Log out</button></h3>
-        
         <form onSubmit={blogSubmitHandler}>
           <h2>create new blog</h2>
           <div>
@@ -88,7 +108,8 @@ const App = () => {
   } else {
     return (
       <div>
-        <LoginForm onSubmit={loginHandler}/>
+        {message && <div className={message.type}>{message.message}</div>}
+        <LoginForm onSubmit={loginHandler} onError={loginErrorHandler}/>
       </div>
     )
   }
