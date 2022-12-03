@@ -50,11 +50,18 @@ const App = () => {
     setBlogs(prev => [...prev, newBlog])
   }
 
+  const blogUpdateHandler = (updatedBlog) => {
+    const idList = blogs.map(blog => blog.id)
+    const index = idList.indexOf(updatedBlog.id)
+ 
+    const newBlogs = [...blogs]
+    newBlogs[index].likes += 1
+    setBlogs(newBlogs)
+  }
+
   const messageHandler = (message) => {
     setMessage(message)
   }
-
-
 
   if (user) {
     return (
@@ -65,7 +72,7 @@ const App = () => {
         <NewBlog user={user.token} onSubmit={blogSubmitHandler} messageHandler={messageHandler}/>
         <div>
           {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
+            <Blog onUpdate={blogUpdateHandler} user={user} key={blog.id} blog={blog} />
           )}
         </div>
       </div>
