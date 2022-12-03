@@ -10,15 +10,25 @@ const NewBlog = ({user, onSubmit, messageHandler}) => {
     const blogSubmitHandler = async e => {
         e.preventDefault()
         try {
-          const token = `bearer ${user}`
+          const token = `bearer ${user.token}`
           const blog = {
             title: title,
             author: author,
             url: url,
-            likes: 15000
           }
           const newBlog = await blogService.createNew({blog,token})
-          onSubmit(newBlog)
+          onSubmit({
+            title: newBlog.title,
+            author: newBlog.author,
+            url: newBlog.url,
+            likes: newBlog.likes,
+            id: newBlog.id,
+            user: {
+                id: newBlog.user,
+                name: user.name,
+                username: user.username,
+            }
+          })
           setAuthor('')
           setTitle('')
           setUrl('')

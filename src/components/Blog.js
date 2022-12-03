@@ -1,7 +1,7 @@
 import { useState } from "react"
 import blogService from "../services/blogs"
 
-const Blog = ({blog, user, onUpdate}) => {
+const Blog = ({blog, user, onUpdate, onMessage, onDelete}) => {
   const [showDetail, setShowDetail] = useState(false)
 
   const detailDisplayHandler = () => {
@@ -26,9 +26,18 @@ const Blog = ({blog, user, onUpdate}) => {
     }
   }
 
-  // console.log(blog)
-
-  // console.log(blog.id)
+  const deleteHandler = async () => {
+    if(window.confirm(`Delete ${blog.title} by ${blog.author}`)){
+      try {
+        await blogService.deleteBlog({blog, user})
+        onDelete(blog.id)
+        onMessage({type: 'success', message: `${blog.title} by ${blog.author} deleted`})
+        // console.log('deleted')
+      } catch(error) {
+        console.log(error)
+      }
+    }
+  }
 
   return (
     <div style={blogStyle}> 
@@ -37,8 +46,8 @@ const Blog = ({blog, user, onUpdate}) => {
         <div>
           <p>{blog.url}</p>
           <p>{blog.likes}<button onClick={updateBlogHandler}>like</button></p>
-          {/* earlier blogs do not have users, remove blog.user check after adding delete functionality */}
-          {blog.user && <p>{blog.user.name}</p>}
+          <p>{blog.user.name}</p>
+          {(blog.user.username === user.username) && <button onClick={deleteHandler}>DELETE</button>}
         </div>
       )}
     </div>

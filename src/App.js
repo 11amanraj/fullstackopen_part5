@@ -46,10 +46,6 @@ const App = () => {
     setUser(user)
   }
 
-  const blogSubmitHandler = (newBlog) => {
-    setBlogs(prev => [...prev, newBlog])
-  }
-
   const blogUpdateHandler = (updatedBlog) => {
     const idList = blogs.map(blog => blog.id)
     const index = idList.indexOf(updatedBlog.id)
@@ -59,9 +55,9 @@ const App = () => {
     setBlogs(newBlogs)
   }
 
-  const messageHandler = (message) => {
-    setMessage(message)
-  }
+  const blogSubmitHandler = (newBlog) => setBlogs(prev => [...prev, newBlog])
+  const blogDeleteHandler = (deletedBlogID) => setBlogs(prev => prev.filter(blog => blog.id !== deletedBlogID))
+  const messageHandler = (message) => setMessage(message)
 
   if (user) {
     return (
@@ -69,11 +65,11 @@ const App = () => {
         <h2>blogs</h2>
         {message && <div className={message.type}>{message.message}</div>}
         <h3>{`${user.name} logged in`} <button onClick={logoutHandler}>Log out</button></h3>
-        <NewBlog user={user.token} onSubmit={blogSubmitHandler} messageHandler={messageHandler}/>
+        <NewBlog user={user} onSubmit={blogSubmitHandler} messageHandler={messageHandler}/>
         <div>
           {blogs.sort((a,b) => a.likes < b.likes ? 1 : -1)
                 .map(blog =>
-                  <Blog onUpdate={blogUpdateHandler} user={user} key={blog.id} blog={blog} />
+                  <Blog onUpdate={blogUpdateHandler} onDelete={blogDeleteHandler} onMessage={messageHandler} user={user} key={blog.id} blog={blog} />
           )}
         </div>
       </div>
