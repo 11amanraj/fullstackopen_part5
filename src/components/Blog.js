@@ -46,7 +46,7 @@ const Blog = ({ blog, user, onUpdate, onMessage, onDelete }) => {
       {showDetail && (
         <div>
           <p>{blog.url}</p>
-          <p>{blog.likes}<button onClick={updateBlogHandler}>like</button></p>
+          <p>{blog.likes}<button className='btn2' onClick={updateBlogHandler}>like</button></p>
           <p>{blog.user.name}</p>
           {(blog.user.username === user.username) && <button onClick={deleteHandler}>DELETE</button>}
         </div>
