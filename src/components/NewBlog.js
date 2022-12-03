@@ -1,5 +1,6 @@
 import { useState } from "react";
 import blogService from '../services/blogs'
+import PropTypes from 'prop-types';
 
 const NewBlog = ({user, onSubmit, messageHandler}) => {
     const [showForm, setShowForm] = useState(false)
@@ -74,6 +75,12 @@ const NewBlog = ({user, onSubmit, messageHandler}) => {
             }
         </div>
      );
+}
+
+NewBlog.propTypes = {
+    user: PropTypes.object.isRequired,
+    onSubmit: PropTypes.func.isRequired, 
+    messageHandler: PropTypes.func.isRequired
 }
  
 export default NewBlog;

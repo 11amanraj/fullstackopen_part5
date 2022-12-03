@@ -1,7 +1,8 @@
 import { useState } from "react"
 import loginService from '../services/login'
+import PropTypes from 'prop-types';
 
-const LoginForm = (props) => {
+const LoginForm = ({onSubmit, onError}) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -14,12 +15,12 @@ const LoginForm = (props) => {
         try {
             const userData = { username, password }
             const user = await loginService.login(userData)
-            props.onSubmit(user)
+            onSubmit(user)
             setUsername('')
             setPassword('')
             console.log('login complete')
         } catch (error) {
-            props.onError({type: 'error', message: 'invalid username or password'})
+            onError({type: 'error', message: 'invalid username or password'})
         }
     }
 
@@ -36,6 +37,11 @@ const LoginForm = (props) => {
             <button type="submit">Submit</button>
         </form>
     )
+}
+
+LoginForm.propTypes = {
+    onSubmit: PropTypes.func.isRequired, 
+    onError: PropTypes.func.isRequired
 }
 
 export default LoginForm
