@@ -3,15 +3,12 @@ import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
 import './App.css'
+import NewBlog from './components/NewBlog'
 
 const App = () => {
   const [message, setMessage] = useState(null)
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -49,31 +46,15 @@ const App = () => {
     setUser(user)
   }
 
-  const loginErrorHandler = (errorObj) => {
-    setMessage(errorObj)
+  const blogSubmitHandler = (newBlog) => {
+    setBlogs(prev => [...prev, newBlog])
   }
 
-  const blogSubmitHandler = async e => {
-    e.preventDefault()
-    try {
-      const token = `bearer ${user.token}`
-      const blog = {
-        title: title,
-        author: author,
-        url: url,
-        likes: 15000
-      }
-      const newBlog = await blogService.createNew({blog,token})
-      setBlogs(prev => [...prev, newBlog])
-      setAuthor('')
-      setTitle('')
-      setUrl('')
-      setMessage({type: 'success', message: `${blog.title} by ${blog.author} added`})
-    } catch(error) {
-      setMessage({type: 'error', message: error.response.data.error})
-      // console.log(error.response.data.error)
-    }
+  const messageHandler = (message) => {
+    setMessage(message)
   }
+
+
 
   if (user) {
     return (
@@ -81,23 +62,7 @@ const App = () => {
         <h2>blogs</h2>
         {message && <div className={message.type}>{message.message}</div>}
         <h3>{`${user.name} logged in`} <button onClick={logoutHandler}>Log out</button></h3>
-        <form onSubmit={blogSubmitHandler}>
-          <h2>create new blog</h2>
-          <div>
-            <label>title</label>
-            <input onChange={e => setTitle(e.target.value)}></input>
-          </div>
-          <div>
-            <label>author</label>
-            <input onChange={e => setAuthor(e.target.value)}></input>
-          </div>
-          <div>
-            <label>url</label>
-            <input onChange={e => setUrl(e.target.value)}></input>
-          </div>
-          <button type='submit'>Create Blog</button>
-        </form>
-        
+        <NewBlog user={user.token} onSubmit={blogSubmitHandler} messageHandler={messageHandler}/>
         <div>
           {blogs.map(blog =>
             <Blog key={blog.id} blog={blog} />
@@ -109,7 +74,7 @@ const App = () => {
     return (
       <div>
         {message && <div className={message.type}>{message.message}</div>}
-        <LoginForm onSubmit={loginHandler} onError={loginErrorHandler}/>
+        <LoginForm onSubmit={loginHandler} onError={messageHandler}/>
       </div>
     )
   }
