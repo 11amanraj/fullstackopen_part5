@@ -1,8 +1,8 @@
-import { useState } from "react"
-import blogService from "../services/blogs"
-import PropTypes from 'prop-types';
+import { useState } from 'react'
+import blogService from '../services/blogs'
+import PropTypes from 'prop-types'
 
-const Blog = ({blog, user, onUpdate, onMessage, onDelete}) => {
+const Blog = ({ blog, user, onUpdate, onMessage, onDelete }) => {
   const [showDetail, setShowDetail] = useState(false)
 
   const detailDisplayHandler = () => {
@@ -20,7 +20,7 @@ const Blog = ({blog, user, onUpdate, onMessage, onDelete}) => {
 
   const updateBlogHandler = async () => {
     try {
-      const updatedBlog = await blogService.updateBlog({blog, user})
+      const updatedBlog = await blogService.updateBlog({ blog, user })
       onUpdate(updatedBlog)
     } catch(error) {
       console.log(error)
@@ -30,9 +30,9 @@ const Blog = ({blog, user, onUpdate, onMessage, onDelete}) => {
   const deleteHandler = async () => {
     if(window.confirm(`Delete ${blog.title} by ${blog.author}`)){
       try {
-        await blogService.deleteBlog({blog, user})
+        await blogService.deleteBlog({ blog, user })
         onDelete(blog.id)
-        onMessage({type: 'success', message: `${blog.title} by ${blog.author} deleted`})
+        onMessage({ type: 'success', message: `${blog.title} by ${blog.author} deleted` })
         // console.log('deleted')
       } catch(error) {
         console.log(error)
@@ -41,7 +41,7 @@ const Blog = ({blog, user, onUpdate, onMessage, onDelete}) => {
   }
 
   return (
-    <div style={blogStyle}> 
+    <div style={blogStyle}>
       {blog.title} by {blog.author} <button onClick={detailDisplayHandler}>{showDetail ? 'hide' : 'show'}</button>
       {showDetail && (
         <div>
@@ -52,14 +52,14 @@ const Blog = ({blog, user, onUpdate, onMessage, onDelete}) => {
         </div>
       )}
     </div>
-  )  
+  )
 }
 
 Blog.propTypes = {
-  blog: PropTypes.object.isRequired, 
-  user: PropTypes.object.isRequired, 
-  onUpdate: PropTypes.func.isRequired, 
-  onMessage: PropTypes.func.isRequired, 
+  blog: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+  onUpdate: PropTypes.func.isRequired,
+  onMessage: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired
 }
 

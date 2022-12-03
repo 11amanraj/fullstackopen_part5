@@ -13,7 +13,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const App = () => {
       setTimeout(() => {
         setMessage(null)
       }, 5000)
-      
+
       return () => clearTimeout(setTimeout(() => {
         setMessage(null)
       }, 5000))
@@ -49,7 +49,7 @@ const App = () => {
   const blogUpdateHandler = (updatedBlog) => {
     const idList = blogs.map(blog => blog.id)
     const index = idList.indexOf(updatedBlog.id)
- 
+
     const newBlogs = [...blogs]
     newBlogs[index].likes += 1
     setBlogs(newBlogs)
@@ -68,9 +68,9 @@ const App = () => {
         <NewBlog user={user} onSubmit={blogSubmitHandler} messageHandler={messageHandler}/>
         <div>
           {blogs.sort((a,b) => a.likes < b.likes ? 1 : -1)
-                .map(blog =>
-                  <Blog onUpdate={blogUpdateHandler} onDelete={blogDeleteHandler} onMessage={messageHandler} user={user} key={blog.id} blog={blog} />
-          )}
+            .map(blog =>
+              <Blog onUpdate={blogUpdateHandler} onDelete={blogDeleteHandler} onMessage={messageHandler} user={user} key={blog.id} blog={blog} />
+            )}
         </div>
       </div>
     )
