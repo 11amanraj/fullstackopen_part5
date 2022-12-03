@@ -37,7 +37,7 @@ const Blog = ({blog, user, onUpdate}) => {
         <div>
           <p>{blog.url}</p>
           <p>{blog.likes}<button onClick={updateBlogHandler}>like</button></p>
-          {/* earlier blogs do not have users remove blog.user check after adding delete functionality */}
+          {/* earlier blogs do not have users, remove blog.user check after adding delete functionality */}
           {blog.user && <p>{blog.user.name}</p>}
         </div>
       )}

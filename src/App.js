@@ -71,8 +71,9 @@ const App = () => {
         <h3>{`${user.name} logged in`} <button onClick={logoutHandler}>Log out</button></h3>
         <NewBlog user={user.token} onSubmit={blogSubmitHandler} messageHandler={messageHandler}/>
         <div>
-          {blogs.map(blog =>
-            <Blog onUpdate={blogUpdateHandler} user={user} key={blog.id} blog={blog} />
+          {blogs.sort((a,b) => a.likes < b.likes ? 1 : -1)
+                .map(blog =>
+                  <Blog onUpdate={blogUpdateHandler} user={user} key={blog.id} blog={blog} />
           )}
         </div>
       </div>
