@@ -1,7 +1,7 @@
 import { useState } from "react";
 import blogService from '../services/blogs'
 
-const NewBlog = (props) => {
+const NewBlog = ({user, onSubmit, messageHandler}) => {
     const [showForm, setShowForm] = useState(false)
     const [title, setTitle] = useState('')
     const [author, setAuthor] = useState('')
@@ -10,7 +10,7 @@ const NewBlog = (props) => {
     const blogSubmitHandler = async e => {
         e.preventDefault()
         try {
-          const token = `bearer ${props.user}`
+          const token = `bearer ${user}`
           const blog = {
             title: title,
             author: author,
@@ -18,13 +18,13 @@ const NewBlog = (props) => {
             likes: 15000
           }
           const newBlog = await blogService.createNew({blog,token})
-          props.onSubmit(newBlog)
+          onSubmit(newBlog)
           setAuthor('')
           setTitle('')
           setUrl('')
-          props.messageHandler({type: 'success', message: `${blog.title} by ${blog.author} added`})
+          messageHandler({type: 'success', message: `${blog.title} by ${blog.author} added`})
         } catch(error) {
-          props.messageHandler({type: 'error', message: error.response.data.error})
+          messageHandler({type: 'error', message: error.response.data.error})
         }
       }
 
