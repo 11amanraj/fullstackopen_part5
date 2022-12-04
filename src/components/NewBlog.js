@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
 
 const NewBlog = ({ user, onSubmit, messageHandler }) => {
   const [showForm, setShowForm] = useState(false)
@@ -36,6 +36,7 @@ const NewBlog = ({ user, onSubmit, messageHandler }) => {
       messageHandler({ type: 'success', message: `${blog.title} by ${blog.author} added` })
     } catch(error) {
       messageHandler({ type: 'error', message: error.response.data.error })
+      console.log(error)
     }
   }
 
@@ -51,17 +52,17 @@ const NewBlog = ({ user, onSubmit, messageHandler }) => {
         <h2>create new blog</h2>
         <div>
           <label>title</label>
-          <input value={title} onChange={e => setTitle(e.target.value)}></input>
+          <input value={title} placeholder='write title here' onChange={e => setTitle(e.target.value)}></input>
         </div>
         <div>
           <label>author</label>
-          <input value={author} onChange={e => setAuthor(e.target.value)}></input>
+          <input value={author} placeholder='write author here' onChange={e => setAuthor(e.target.value)}></input>
         </div>
         <div>
           <label>url</label>
-          <input value={url} onChange={e => setUrl(e.target.value)}></input>
+          <input value={url} placeholder='write url here' onChange={e => setUrl(e.target.value)}></input>
         </div>
-        <button type='submit'>Create Blog</button>
+        <button type='submit' id='btn'>Create Blog</button>
         <button onClick={() => setShowForm(false)}>Cancel</button>
       </form>
     )
@@ -77,10 +78,10 @@ const NewBlog = ({ user, onSubmit, messageHandler }) => {
   )
 }
 
-NewBlog.propTypes = {
-  user: PropTypes.object.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  messageHandler: PropTypes.func.isRequired
-}
+// NewBlog.propTypes = {
+//   user: PropTypes.object.isRequired,
+//   onSubmit: PropTypes.func.isRequired,
+//   messageHandler: PropTypes.func.isRequired
+// }
 
 export default NewBlog

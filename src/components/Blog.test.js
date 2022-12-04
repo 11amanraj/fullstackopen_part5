@@ -5,6 +5,7 @@ import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 import blogService from '../services/blogs'
 
+
 test('only title and author are rendered', () => {
   const blog = {
     title: 'Realm of Elderlings',
