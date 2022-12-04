@@ -68,6 +68,17 @@ describe('Blog app', function() {
         cy.get('.btn2').click()
         cy.get('#likes').contains(2)
       })
+
+      it('users can delete blogs published by themselves', function() {
+        cy.get('#show-detail').click()
+        cy.get('#delete-blog').click()
+        cy.contains('The Gunslinger by Stephen King deleted')
+        cy.get('#likes').should('not.exist')
+      })
+
+      it('users cant delete blogs published by other users', function() {
+
+      })
     })
   })
 })
