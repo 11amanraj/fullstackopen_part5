@@ -32,4 +32,23 @@ describe('Blog app', function() {
       cy.get('.error').should('have.css', 'background-color', 'rgb(214, 171, 166)')
     })
   })
+
+  describe('When logged in', function() {
+    beforeEach(function() {
+      cy.get('input:first').type('superman')
+      cy.get('input:last').type('krypto')
+      cy.contains('Submit').click()
+    })
+
+    it('A blog can be created', function() {
+      cy.get('#show-form').click()
+      cy.get('#title-input').type('The Gunslinger')
+      cy.get('#author-input').type('Stephen King')
+      cy.get('#url-input').type('www.darktower.com')
+      cy.get('#btn').click()
+      cy.contains('The Gunslinger by Stephen King added')
+      cy.get('#show-detail').click()
+      cy.contains('www.darktower.com')
+    })
+  })
 })

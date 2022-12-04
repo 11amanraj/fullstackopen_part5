@@ -42,7 +42,7 @@ const Blog = ({ blog, user, onUpdate, onMessage, onDelete }) => {
 
   return (
     <div style={blogStyle}>
-      {blog.title} by {blog.author} <button onClick={detailDisplayHandler}>{showDetail ? 'hide' : 'show'}</button>
+      {blog.title} by {blog.author} <button id='show-detail' onClick={detailDisplayHandler}>{showDetail ? 'hide' : 'show'}</button>
       {showDetail && (
         <div>
           <p>{blog.url}</p>

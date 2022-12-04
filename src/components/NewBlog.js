@@ -42,7 +42,7 @@ const NewBlog = ({ user, onSubmit, messageHandler }) => {
 
   const newBlogButton = () => {
     return (
-      <button onClick={() => setShowForm(true)}>new blog</button>
+      <button id='show-form' onClick={() => setShowForm(true)}>new blog</button>
     )
   }
 
@@ -52,15 +52,15 @@ const NewBlog = ({ user, onSubmit, messageHandler }) => {
         <h2>create new blog</h2>
         <div>
           <label>title</label>
-          <input value={title} placeholder='write title here' onChange={e => setTitle(e.target.value)}></input>
+          <input id='title-input' value={title} placeholder='write title here' onChange={e => setTitle(e.target.value)}></input>
         </div>
         <div>
           <label>author</label>
-          <input value={author} placeholder='write author here' onChange={e => setAuthor(e.target.value)}></input>
+          <input id='author-input' value={author} placeholder='write author here' onChange={e => setAuthor(e.target.value)}></input>
         </div>
         <div>
           <label>url</label>
-          <input value={url} placeholder='write url here' onChange={e => setUrl(e.target.value)}></input>
+          <input id='url-input' value={url} placeholder='write url here' onChange={e => setUrl(e.target.value)}></input>
         </div>
         <button type='submit' id='btn'>Create Blog</button>
         <button onClick={() => setShowForm(false)}>Cancel</button>
