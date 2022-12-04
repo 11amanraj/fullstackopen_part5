@@ -50,5 +50,24 @@ describe('Blog app', function() {
       cy.get('#show-detail').click()
       cy.contains('www.darktower.com')
     })
+
+    describe('One Blog already added', function() {
+      beforeEach(function() {
+        cy.get('#show-form').click()
+        cy.get('#title-input').type('The Gunslinger')
+        cy.get('#author-input').type('Stephen King')
+        cy.get('#url-input').type('www.darktower.com')
+        cy.get('#btn').click()
+      })
+
+      it('users can like a blog', function() {
+        cy.get('#show-detail').click()
+        cy.get('#likes').contains(0)
+        cy.get('.btn2').click()
+        cy.get('#likes').contains(1)
+        cy.get('.btn2').click()
+        cy.get('#likes').contains(2)
+      })
+    })
   })
 })
