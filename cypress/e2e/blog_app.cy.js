@@ -15,12 +15,21 @@ describe('Blog app', function() {
     cy.contains('Password')
   })
 
-  describe('Login', function() {
+  describe('Login Attempt', function() {
     it('Successful Login', function() {
       cy.get('input:first').type('superman')
       cy.get('input:last').type('krypto')
       cy.contains('Submit').click()
       cy.contains('Clark Kent logged in')   
+    })
+
+    it('Unsuccessful Login', function() {
+      cy.get('input:first').type('superman')
+      cy.get('input:last').type('wrong')
+      cy.contains('Submit').click()
+      cy.get('.error').should('contain', 'invalid username or password')
+      cy.get('.error').should('have.css', 'color', 'rgb(255, 0, 0)')
+      cy.get('.error').should('have.css', 'background-color', 'rgb(214, 171, 166)')
     })
   })
 })
